@@ -9,30 +9,55 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "filament/filament": "^3.0",
-        "filament/spatie-laravel-media-library-plugin": "^3.0",
-        "filament/spatie-laravel-settings-plugin": "^3.0",
-        "filament/spatie-laravel-tags-plugin": "^3.0",
-        "filament/spatie-laravel-translatable-plugin": "^3.0",
-        "flowframe/laravel-trend": "^0.2.0",
+        "althinect/filament-spatie-roles-permissions": "^2.2",
+        "bezhansalleh/filament-language-switch": "^3.1",
+        "codephix/asaas-sdk": "^2.0",
+        "codewithdennis/filament-select-tree": "^3.1",
+        "croustibat/filament-jobs-monitor": "^2.5",
+        "efipay/sdk-php-apis-efi": "^1.9",
+        "filament/filament": "3.2.114",
+        "filament/notifications": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
+        "filament/spatie-laravel-settings-plugin": "^3.2",
+        "filament/spatie-laravel-translatable-plugin": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^11.0",
+        "ibrahimbougaoua/filament-rating-star": "^1.0",
+        "joaopaulolndev/filament-edit-profile": "*",
+        "laravel/cashier": "^15.6",
+        "laravel/framework": "^11.31",
         "laravel/horizon": "^5.21",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.8",
-        "squirephp/countries-en": "^3.3",
-        "squirephp/currencies-en": "^3.3"
+        "laravel/tinker": "^2.9",
+        "leandrocfe/filament-apex-charts": "^3.2",
+        "leandrocfe/filament-ptbr-form-fields": "3.1.0",
+        "lucascudo/laravel-pt-br-localization": "^3.0",
+        "malzariey/filament-daterangepicker-filter": "^3.2",
+        "novadaemon/filament-pretty-json": "^2.3",
+        "owenvoke/blade-fontawesome": "^2.8",
+        "piggly/php-pix": "^3.0",
+        "psr/simple-cache": "^2.0",
+        "pxlrbt/filament-excel": "^2.3",
+        "schmeits/filament-character-counter": "^1.3",
+        "spatie/laravel-data": "^4.11",
+        "spatie/laravel-settings": "*",
+        "stripe/stripe-php": "^16.4",
+        "torgodly/html2media": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
-        "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
-        "laravel/sail": "^1.18",
-        "mockery/mockery": "^1.4.4",
+        "barryvdh/laravel-ide-helper": "^3.1",
+        "captainhook/captainhook": "^5.24",
+        "friendsofphp/php-cs-fixer": "^3.53",
+        "larastan/larastan": "^2.9",
+        "fakerphp/faker": "^1.23",
+        "laravel/pail": "^1.1",
+        "laravel/pint": "^1.20",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.1",
-        "larastan/larastan": "^2.1",
-        "phpstan/phpstan-deprecation-rules": "^1.1",
-        "phpunit/phpunit": "^10.1",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "rector/rector": "^1.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -62,13 +87,52 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "cs": [
-            "pint"
+        "php-cs-format": [
+            "./vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix -v --config=./php-cs-fixer.php"
         ],
-        "pint": "pint",
-        "test:phpstan": "phpstan analyse",
-        "test": [
-            "@test:phpstan"
+        "php-cs-format-dryrun": [
+            "@php-cs-format --dry-run --stop-on-violation"
+        ],
+        "php-cs-clear-cache": [
+            "rm -f ./.php-cs-fixer.cache"
+        ],
+        "prettier": [
+            "./node_modules/.bin/prettier \"resources/**/*{.css,.blade.php,.js}\" --config ./.prettierrc --ignore-path ./.prettierignore --cache"
+        ],
+        "prettier-format": [
+            "@prettier --write"
+        ],
+        "prettier-format-dryrun": [
+            "@prettier --check"
+        ],
+        "clear-prettier-cache": [
+            "rm -f ./node_modules/.cache/prettier/.prettier-cache"
+        ],
+        "format-dryrun": [
+            "@php-cs-format-dryrun",
+            "@prettier-format-dryrun"
+        ],
+        "format": [
+            "@php-cs-format",
+            "@prettier-format"
+        ],
+        "generate-helper-files": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -M",
+            "@php artisan ide-helper:meta",
+            "./vendor/bin/rector",
+            "@php-cs-format"
+        ],
+        "lint": [
+            "./vendor/bin/phpstan analyse --memory-limit=2G"
+        ],
+        "checks": [
+            "@format-dryrun",
+            "@lint"
+        ],
+        "ci": [
+            "rm -rf ./vendor",
+            "composer install"
         ]
     },
     "extra": {
@@ -81,7 +145,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "dev",

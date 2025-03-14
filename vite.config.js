@@ -1,19 +1,25 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 import laravel, { refreshPaths } from 'laravel-vite-plugin'
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineConfig({
     plugins: [
-        laravel.default({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+        laravel({
+            input: [
+                'resources/css/filament/admin/theme.css',
+                'resources/css/public/public.css',
+            ],
             refresh: [
-                ...refreshPaths,
-                'app/Filament/**',
-                'app/Forms/Components/**',
-                'app/Livewire/**',
-                'app/Infolists/Components/**',
-                'app/Providers/Filament/**',
-                'app/Tables/Columns/**',
+                ...refreshPaths
             ],
         }),
     ],
-})
+    server: {
+        host: process.env.VITE_HOST || 'localhost',
+        watch: {
+            usePolling: false,
+        },
+    }
+});
